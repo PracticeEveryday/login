@@ -1,6 +1,7 @@
 import { users } from "../db/users";
 
 import * as redis from "../db/redis/redis.utils";
+import { UserInfo } from "../interfaces/userInfo";
 import { issueToken, Token } from "../utils/jwt.utils";
 
 export const test = (): string => {
@@ -19,4 +20,11 @@ export const login = async (email: string, password: string): Promise<Token> => 
   await redis.create(token.accessToken, token.refreshToken, user.userId);
 
   return token;
+};
+
+export const findOneById = (userId: number): UserInfo => {
+  const user = users.find((user) => user.userId === userId);
+  if (!user) throw new Error("해당 유저가 존재하지 않습니다.");
+
+  return user;
 };

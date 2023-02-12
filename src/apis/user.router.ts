@@ -17,11 +17,13 @@ userRouter.get("/login", async (req: Request, res: Response) => {
   res.status(200).json({ result: { accessToken } });
 });
 
-userRouter.get("/:userId/test", jwtMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get("/:userId", jwtMiddleware, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const cookie = req.cookies;
+    const { userId } = req.params;
 
-    res.status(200).json(cookie);
+    const user = userService.findOneById(+userId);
+
+    res.status(200).json(user);
   } catch (error) {
     next();
   }

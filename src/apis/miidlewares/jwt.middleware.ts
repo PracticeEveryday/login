@@ -17,15 +17,24 @@ declare global {
 
 const redisCli = redisClient.v4;
 
-export const jwtMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-  const ACCESSTOKEN_IDX = 1;
-  const ACCESSTOKEN_HEADERS_LOCATE = "authorization";
+const validationToken = (req: Request, next: NextFunction): string | undefined => {
+  try {
+    const ACCESSTOKEN_IDX = 1;
+    const ACCESSTOKEN_HEADERS_LOCATE = "authorization";
+    if (!req.headers[ACCESSTOKEN_HEADERS_LOCATE]) throw new Error("토큰이 없습니다.");
+    const accessToken = req.headers[ACCESSTOKEN_HEADERS_LOCATE].split(" ")[ACCESSTOKEN_IDX].trim();
 
-  if (!req.headers[ACCESSTOKEN_HEADERS_LOCATE]) throw new Error("토큰이 없습니다.");
-  const accessToken = req.headers[ACCESSTOKEN_HEADERS_LOCATE].split(" ")[ACCESSTOKEN_IDX].trim();
+    return accessToken;
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const jwtMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  const accessToken = validationToken(req, next);
 
   try {
-    const decoded = await decodeToken(accessToken);
+    const decoded = await decodeToken(accessToken!);
     req.userId = decoded.userId;
 
     next();
@@ -39,15 +48,15 @@ export const jwtMiddleware = async (req: Request, res: Response, next: NextFunct
       // 남은 시간 조절도 가능
       // const isLived = await redisCli.ttl(accessToken);
 
-      if (!isExist) {
-        throw new Error("해당 토큰이 존재하지 않습니다.");
-      }
-
-      if (refreshToken !== getRefreshToken.refreshToken) {
-        throw new Error("refreshToken이 일치하지 않습니다.");
-      }
-
       try {
+        if (!isExist) {
+          throw new Error("해당 토큰이 존재하지 않습니다.");
+        }
+
+        if (refreshToken !== getRefreshToken.refreshToken) {
+          throw new Error("refreshToken이 일치하지 않습니다.");
+        }
+
         await decodeToken(refreshToken);
       } catch (error) {
         if (error instanceof TokenExpiredError) throw new Error("로그인을 다시 해주세요");
