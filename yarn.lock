@@ -1934,6 +1934,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/cookie-parser@npm:^1.4.3":
+  version: 1.4.3
+  resolution: "@types/cookie-parser@npm:1.4.3"
+  dependencies:
+    "@types/express": "*"
+  checksum: f390f3af1b1711190dee2c2ecd9af33af81fbde8d81ee820dadb6fe1e0d80c3faba40af37c6ed36fb88b04b64870f6a021f7e9edceecd17c42fe22abe0af5005
+  languageName: node
+  linkType: hard
+
 "@types/cors@npm:^2.8.13":
   version: 2.8.13
   resolution: "@types/cors@npm:2.8.13"
@@ -1950,7 +1959,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-serve-static-core@npm:^4.17.31":
+"@types/express-serve-static-core@npm:^4.17.31, @types/express-serve-static-core@npm:^4.17.33":
   version: 4.17.33
   resolution: "@types/express-serve-static-core@npm:4.17.33"
   dependencies:
@@ -1958,6 +1967,18 @@ __metadata:
     "@types/qs": "*"
     "@types/range-parser": "*"
   checksum: dce580d16b85f207445af9d4053d66942b27d0c72e86153089fa00feee3e96ae336b7bedb31ed4eea9e553c99d6dd356ed6e0928f135375d9f862a1a8015adf2
+  languageName: node
+  linkType: hard
+
+"@types/express@npm:*":
+  version: 4.17.17
+  resolution: "@types/express@npm:4.17.17"
+  dependencies:
+    "@types/body-parser": "*"
+    "@types/express-serve-static-core": ^4.17.33
+    "@types/qs": "*"
+    "@types/serve-static": "*"
+  checksum: 0196dacc275ac3ce89d7364885cb08e7fb61f53ca101f65886dbf1daf9b7eb05c0943e2e4bbd01b0cc5e50f37e0eea7e4cbe97d0304094411ac73e1b7998f4da
   languageName: node
   linkType: hard
 
@@ -3029,10 +3050,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie-parser@npm:^1.4.6":
+  version: 1.4.6
+  resolution: "cookie-parser@npm:1.4.6"
+  dependencies:
+    cookie: 0.4.1
+    cookie-signature: 1.0.6
+  checksum: 1e5a63aa82e8eb4e02d2977c6902983dee87b02e87ec5ec43ac3cb1e72da354003716570cd5190c0ad9e8a454c9d3237f4ad6e2f16d0902205a96a1c72b77ba5
+  languageName: node
+  linkType: hard
+
 "cookie-signature@npm:1.0.6":
   version: 1.0.6
   resolution: "cookie-signature@npm:1.0.6"
   checksum: f4e1b0a98a27a0e6e66fd7ea4e4e9d8e038f624058371bf4499cfcd8f3980be9a121486995202ba3fca74fbed93a407d6d54d43a43f96fd28d0bd7a06761591a
+  languageName: node
+  linkType: hard
+
+"cookie@npm:0.4.1":
+  version: 0.4.1
+  resolution: "cookie@npm:0.4.1"
+  checksum: bd7c47f5d94ab70ccdfe8210cde7d725880d2fcda06d8e375afbdd82de0c8d3b73541996e9ce57d35f67f672c4ee6d60208adec06b3c5fc94cebb85196084cf8
   languageName: node
   linkType: hard
 
@@ -5796,6 +5834,7 @@ __metadata:
     "@babel/core": ^7.20.12
     "@babel/preset-env": ^7.20.2
     "@babel/preset-typescript": ^7.18.6
+    "@types/cookie-parser": ^1.4.3
     "@types/cors": ^2.8.13
     "@types/express": ^4.17.16
     "@types/jest": ^29.4.0
@@ -5805,6 +5844,7 @@ __metadata:
     "@yarnpkg/sdks": ^2.7.0
     babel-jest: ^29.4.1
     concurrently: ^7.6.0
+    cookie-parser: ^1.4.6
     cors: ^2.8.5
     dayjs: ^1.11.7
     dotenv: ^16.0.3

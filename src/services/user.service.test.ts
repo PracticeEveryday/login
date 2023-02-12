@@ -7,7 +7,7 @@ test("test를 실행하면 test를 뱉어냅니다.", () => {
 
 describe("findOne 메서드 호출", () => {
   const email = "test1@test.com";
-  const user = userService.findOneByEmail(email);
+  const user = userService.login(email);
   test("userId 값은 1입니다.", () => {
     expect(user.userId).toBe(1);
     expect(user).toHaveProperty("userId");

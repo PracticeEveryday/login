@@ -1,7 +1,6 @@
 import { redisClient } from "./index";
 
-export const create = async (accessToken: string, refreshToken: string) => {
-  await redisClient.set(accessToken, refreshToken);
-  await redisClient.expire(accessToken, 3600000); // 2 second expire time
-  await redisClient.ttl(accessToken); //2
+export const create = async (accessToken: string, refreshToken: string, userId: number) => {
+  await redisClient.set(accessToken, JSON.stringify({ refreshToken, userId }));
+  await redisClient.expire(accessToken, 30 * 24 * 60 * 1000); // 30일
 };

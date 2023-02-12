@@ -1,6 +1,6 @@
 import * as jwt from "jsonwebtoken";
 
-type JwtPayload = {
+type tokenPayload = {
   userId: number;
 };
 
@@ -9,10 +9,23 @@ export type Token = {
   refreshToken: string;
 };
 
-export const issueToken = (obj: JwtPayload): Token => {
-  const JWT_KEY = "test1234";
+export interface JwtPayLoad extends jwt.JwtPayload {
+  userId: number;
+}
+
+const JWT_KEY = "test1234";
+
+export const issueToken = (obj: tokenPayload): Token => {
   const accessToken = jwt.sign(obj, JWT_KEY, { expiresIn: "1h" });
   const refreshToken = jwt.sign({}, JWT_KEY, { expiresIn: "30d" });
 
   return { accessToken, refreshToken };
+};
+
+export const decodeToken = async (token: string): Promise<JwtPayLoad> => {
+  const decoded = (await jwt.verify(token, JWT_KEY)) as JwtPayLoad;
+
+  const copyDecoded = Object.assign({}, decoded);
+
+  return copyDecoded;
 };
