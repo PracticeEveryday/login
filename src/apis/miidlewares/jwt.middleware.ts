@@ -34,7 +34,8 @@ export const jwtMiddleware = async (req: Request, res: Response, next: NextFunct
       const { refreshToken } = req.cookies;
 
       const isExist = await redisCli.exists(accessToken);
-      const getRefreshToken = await redisCli.get(accessToken);
+      const getRefreshToken = JSON.parse(await redisCli.get(accessToken));
+
       // 남은 시간 조절도 가능
       // const isLived = await redisCli.ttl(accessToken);
 
@@ -42,7 +43,7 @@ export const jwtMiddleware = async (req: Request, res: Response, next: NextFunct
         throw new Error("해당 토큰이 존재하지 않습니다.");
       }
 
-      if (refreshToken !== getRefreshToken) {
+      if (refreshToken !== getRefreshToken.refreshToken) {
         throw new Error("refreshToken이 일치하지 않습니다.");
       }
 
@@ -53,13 +54,14 @@ export const jwtMiddleware = async (req: Request, res: Response, next: NextFunct
         next(error);
       }
 
-      const userId = JSON.parse(getRefreshToken).userId;
+      const userId = getRefreshToken.userId;
       const { accessToken: newAccessToken, refreshToken: newRefreshToken } = issueToken({ userId });
 
       await redis.create(newAccessToken, newRefreshToken, userId);
 
-      res.cookie("refreshToken", refreshToken, { expires: dayjs(Date.now() + 1 * 60 * 1000).toDate(), httpOnly: true });
-      res.status(200).json({ newAccessToken, newrefreshToken: newRefreshToken });
+      res.cookie("refreshToken", newRefreshToken, { expires: dayjs(Date.now() + 1 * 60 * 1000).toDate(), httpOnly: true });
+      res.status(200).json({ newAccessToken });
+      return;
     }
     next(error);
   }
