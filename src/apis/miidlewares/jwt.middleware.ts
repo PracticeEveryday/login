@@ -61,6 +61,7 @@ export const jwtMiddleware = async (req: Request, res: Response, next: NextFunct
       } catch (error) {
         if (error instanceof TokenExpiredError) throw new Error("로그인을 다시 해주세요");
         next(error);
+        return;
       }
 
       const userId = getRefreshToken.userId;
