@@ -4,9 +4,15 @@ import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 import dotenv from "dotenv";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 
 import { userRouter } from "./apis/user.router";
 import { redisRouter } from "./apis/redis.router";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 dotenv.config(); // env환경변수 파일 가져오기
 
